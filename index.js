@@ -7,7 +7,8 @@ const {
     setNewDept,
     getEmployees,
     setNewEmployee,
-    getMenuOption
+    getMenuOption,
+    changeEmployee
   } = require('./src/helperFunctions')
 
 // For retrieving mysql password

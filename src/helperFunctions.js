@@ -170,7 +170,40 @@ async function setNewEmployee() {
 };
 
 async function changeEmployee() {
-  
+  const empPicker = await inquirer.prompt({
+    type: 'list',
+    message: 'Select employee to modify:',
+    choices: getEmployees().map((employee) => {
+      return `${employee.first_name} ${employee.last_name}`
+    }),
+    name: 'selectedEmployee'
+  })
+
+  const attrPicker = await inquirer.prompt({
+    type:'list',
+    message:"Select employee property to modify: ",
+    choices: [
+      id,
+      first_name,
+      last_name,
+      role_id,
+      manager_id,
+    ],
+    name: 'selectedAttr'
+  });
+
+  const valuePicker = await inquirer.prompt({
+    type: 'input',
+    message: `Select value for ${attrPicker.selectedAttr} on ${empPicker.selectedEmployee}:`,
+    name: 'attrValue'
+  });
+
+  db.query(`UPDATE employees
+  SET ?
+  WHERE ?`, [`${attrPicker.selectedAttr}=${valuePicker.attrValue}`,`employee.first_name=${empPicker.selectedEmployee.split(' ')[0]}`], (err, result) => {
+    err ? console.log(err) : console.log(result)
+  });
+
 }
 
 module.exports = {
@@ -180,5 +213,6 @@ module.exports = {
   setNewDept,
   getEmployees,
   setNewEmployee,
-  getMenuOption
+  getMenuOption,
+  changeEmployee
 };
