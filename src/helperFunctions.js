@@ -24,33 +24,48 @@ async function getDepts() {
       return result;
     }
   });
-};
+}
 
-// async function getRoles() {
-//   db.query("SELECT title FROM roles", (err, result) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       return result;
-//     }
-//   });
-// };
+async function getRoles() {
+  db.query("SELECT title FROM roles", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("\nRoles:");
+      result.forEach((role) => {
+        console.log(`\t-${role.title}`);
+      });
+      console.log("");
 
-// async function getEmployees() {
-//   db.query(
-//     `SELECT employees.id, employees.first_name, employees.last_name, roles.title, roles.salary, departments.deptName 
-//         FROM employees  
-//         LEFT JOIN roles ON employees.role_id=roles.id 
-//         LEFT JOIN departments ON roles.department_id=departments.id`,
-//     (err, result) => {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         return result;
-//       }
-//     }
-//   );
-// };
+      return result;
+    }
+  });
+}
+
+async function getEmployees() {
+  db.query(
+    `SELECT employees.id, employees.first_name, employees.last_name, roles.title, roles.salary, departments.deptName 
+        FROM employees  
+        LEFT JOIN roles ON employees.role_id=roles.id 
+        LEFT JOIN departments ON roles.department_id=departments.id`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("\nEmployees:");
+        result.forEach((emp) => {
+          console.log(` -${emp.first_name} ${emp.last_name}
+    ID: ${emp.id}
+    Department: ${emp.deptName}
+    Title: ${emp.title}
+    Salary: $${emp.salary}/yr\n`);
+        });
+        console.log("");
+        return result;
+      }
+    }
+  );
+}
 
 menuQuestions = [
   {
@@ -67,78 +82,82 @@ menuQuestions = [
       "Quit",
     ],
     name: "menuSelectedOption",
-  }
+  },
 ];
 
-// deptQuestions = [
-//   {
-//     type: "input",
-//     message: "New dept name: ",
-//     name: "newDeptName",
-//   }
-// ];
+deptQuestions = [
+  {
+    type: "input",
+    message: "New dept name: ",
+    name: "newDeptName",
+  },
+];
 
-
-
-// roleQuestions = [
-//   {
-//     type: "input",
-//     message: "New role title: ",
-//     name: "newRoleTitle",
-//   },
-//   {
-//     type: "input",
-//     message: "New role salary: ",
-//     name: "newRoleSalary",
-//   },
-//   {
-//     type: "list",
-//     message: "New role department: ",
-//     choices: getDepts(),
-//     name: "newRoleDept",
-//   }
-// ];
+roleQuestions = [
+  {
+    type: "input",
+    message: "New role title: ",
+    name: "newRoleTitle",
+  },
+  {
+    type: "input",
+    message: "New role salary: ",
+    name: "newRoleSalary",
+  },
+  {
+    type: "list",
+    message: "New role department: ",
+    choices: getDepts().map((dept) => {
+      return 
+    }),
+    name: "newRoleDept",
+  },
+];
 
 async function getMenuOption() {
   const selectedOption = await prompt(menuQuestions);
   return selectedOption.menuSelectedOption;
 }
 
-// async function setNewRole() {
-//   const roleInfo = await prompt(roleQuestions);
-//   db.query(
-//     "INSERT INTO roles VALUES (?, ?, ?)",
-//     [roleInfo.newRoleTitle, roleInfo.newRoleSalary, roleInfo.newRoleDept],
-//     (err, result) => {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         console.log({
-//           result,
-//           msg: "Successfully wrote new role to db",
-//         });
-//       }
-//     }
-//   );
-// }
+async function setNewRole() {
+  const roleInfo = await prompt(roleQuestions);
+  setTimeout(() => {
+    db.query(
+      "INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)",
+      [roleInfo.newRoleTitle, roleInfo.newRoleSalary, roleInfo.newRoleDept],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log({
+            result,
+            msg: "Successfully wrote new role to db",
+          });
+        }
+      }
+    );
+  }, 50);
+}
 
-// async function setNewDept() {
-//   const deptInfo = await prompt(deptQuestions);
-//   db.query(
-//     "INSERT INTO departments VALUES (?)",
-//     deptInfo.newDeptName,
-//     (err, result) => {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         console.log({
-//           result,
-//           msg: "Successfully wrote new dept to db",
-//         });
-//       }
-//     }
-//   );
-// }
+async function setNewDept() {
+  const deptInfo = await prompt(deptQuestions);
+  setTimeout(() => {
+    db.query(
+      "INSERT INTO departments (deptName) VALUES (?);",
+      deptInfo.newDeptName,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log({
+            result,
+            msg: "Successfully wrote new dept to db",
+          });
+        }
+      }
+    );
+  }, 50);
+}
 
 // async function setNewEmployee() {
 //   employeeQuestions = [
@@ -225,21 +244,20 @@ async function getMenuOption() {
 // }
 
 function closeDB() {
-  console.log('Closing db connection...')
-  db.end()
-  console.log('db connection closed.')
+  console.log("Closing db connection...");
+  db.end();
+  console.log("db connection closed.");
 }
 
-
 module.exports = {
-  // getRoles,
+  getRoles,
   // setNewRole,
   getDepts,
-  // setNewDept,
-  // getEmployees,
+  setNewDept,
+  getEmployees,
   // setNewEmployee,
   getMenuOption,
   // changeEmployee,
   db,
-  closeDB
+  closeDB,
 };

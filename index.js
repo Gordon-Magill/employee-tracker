@@ -3,11 +3,11 @@ require("dotenv").config();
 
 // Helper functions for each major operation
 const {
-  //   getRoles,
+    getRoles,
   //   setNewRole,
   getDepts,
-  //   setNewDept,
-  //   getEmployees,
+    setNewDept,
+    getEmployees,
   //   setNewEmployee,
   getMenuOption,
   //   changeEmployee,
@@ -31,37 +31,41 @@ async function cycleMenuOptions() {
       // then inquirer will overwrite the terminal console logs...
       setTimeout(() => {
         cycleMenuOptions();
-      }, 1);
+      }, 50);
       break;
     case "View all roles":
+        await getRoles()
         setTimeout(() => {
             cycleMenuOptions();
-          }, 1);
+          }, 50);
       break;
     case "View all employees":
+        await getEmployees()
         setTimeout(() => {
             cycleMenuOptions();
-          }, 1);
+          }, 50);
       break;
     case "Add department":
+        await setNewDept()
         setTimeout(() => {
             cycleMenuOptions();
-          }, 1);
+          }, 50);
       break;
     case "Add role":
+        await setNewRole()
         setTimeout(() => {
             cycleMenuOptions();
-          }, 1);
+          }, 50);
       break;
     case "Add employee":
         setTimeout(() => {
             cycleMenuOptions();
-          }, 1);
+          }, 50);
       break;
     case "Change employee role":
         setTimeout(() => {
             cycleMenuOptions();
-          }, 1);
+          }, 50);
       break;
   }
 }
