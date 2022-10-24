@@ -1,60 +1,70 @@
-const inquirer = require('inquirer')
-const db = require('mysql2')
+// For retrieving mysql password from .env
+require("dotenv").config();
+
+// Helper functions for each major operation
 const {
-    getRoles,
-    setNewRole,
-    getDepts,
-    setNewDept,
-    getEmployees,
-    setNewEmployee,
-    getMenuOption,
-    changeEmployee
-  } = require('./src/helperFunctions')
+  //   getRoles,
+  //   setNewRole,
+  getDepts,
+  //   setNewDept,
+  //   getEmployees,
+  //   setNewEmployee,
+  getMenuOption,
+  //   changeEmployee,
+  db,
+  closeDB,
+} = require("./src/helperFunctions");
 
-// For retrieving mysql password
-require('dotenv').config()
+// Continuously loops through options until the user elects to exit the program
+async function cycleMenuOptions() {
+  let option = await getMenuOption();
 
-db.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: process.env.DB_PW,
-    database: 'company_db'
-})
+  switch (option) {
+    case "Quit":
+      closeDB();
+      console.log("Done cycling options");
+      return;
+    case "View all departments":
+      await getDepts();
 
-while (true) {
-    let menuOption = getMenuOption()
-
-    switch (menuOption) {
-        case "View all departments":
-            await getDepts()
-            break;
-        case "View all roles":
-            await getRoles()
-            break;
-        case "View all employees":
-            await getEmployees()
-            break;
-        case "Add department":
-            await setNewDept()
-            break;
-        case "Add role":
-            await setNewRole()
-            break;
-        case "Add employee":
-            await setNewEmployee()
-            break;
-        case "Change employee role":
-            // await changeEmployee()
-            break;
-    }
-
-    await menuOption
-
-
-
-        
+      // For whatever reason if you don't force the code to pause (even for 1ms)
+      // then inquirer will overwrite the terminal console logs...
+      setTimeout(() => {
+        cycleMenuOptions();
+      }, 1);
+      break;
+    case "View all roles":
+        setTimeout(() => {
+            cycleMenuOptions();
+          }, 1);
+      break;
+    case "View all employees":
+        setTimeout(() => {
+            cycleMenuOptions();
+          }, 1);
+      break;
+    case "Add department":
+        setTimeout(() => {
+            cycleMenuOptions();
+          }, 1);
+      break;
+    case "Add role":
+        setTimeout(() => {
+            cycleMenuOptions();
+          }, 1);
+      break;
+    case "Add employee":
+        setTimeout(() => {
+            cycleMenuOptions();
+          }, 1);
+      break;
+    case "Change employee role":
+        setTimeout(() => {
+            cycleMenuOptions();
+          }, 1);
+      break;
+  }
 }
 
-
-
-// Present initial options to user
+// Start the program
+cycleMenuOptions();
