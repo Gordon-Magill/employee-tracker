@@ -34,12 +34,12 @@ async function getMenuOption() {
         "Change employee role",
         "Quit",
       ],
-      name: "menuSelectedOption",
+      name: "Options",
     },
   ];
 
   const selectedOption = await prompt(menuQuestions);
-  return selectedOption.menuSelectedOption;
+  return selectedOption.Options;
 };
 
 // ***************************
@@ -53,11 +53,7 @@ async function getDepts() {
 
 // 
 function showDepts(depts) {
-  console.log("\nDepartments:");
   console.table(depts)
-  // depts.forEach((dept) => {
-  //   console.log(`\t-${dept.deptName}`);
-  // });
   console.log("");
 }
 
@@ -95,12 +91,7 @@ async function getRoles() {
 }
 
 function showRoles(roles) {
-  console.log("\nRoles:");
   console.table(roles)
-  // roles.forEach((role) => {
-  //   // console.table(role)
-  //   console.log(`\t-${role.title}`);
-  // });
   console.log("");
 }
 
@@ -156,15 +147,7 @@ async function getEmployees() {
 }
 
 function showEmployees(employees) {
-  console.log("\nEmployees:");
   console.table(employees)
-  // employees.forEach((emp) => {
-  //   console.log(` -${emp.first_name} ${emp.last_name}
-  //   ID: ${emp.id}
-  //   Department: ${emp.deptName}
-  //   Title: ${emp.title}
-  //   Salary: $${emp.salary}/yr\n`);
-  // });
   console.log("");
 }
 

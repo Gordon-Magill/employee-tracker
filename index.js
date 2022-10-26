@@ -78,5 +78,7 @@ async function cycleMenuOptions() {
   };
 };
 
-// Start the program
+// Start the program with some nice text introduction
+console.clear()
+console.log(`\nWelcome to the company CMS\n`)
 cycleMenuOptions();

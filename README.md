@@ -1,15 +1,16 @@
 # Employee Tracker CMS
 [![License: Do What the Fuck You Want to Public License](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)](http://www.wtfpl.net/about/)
 
+![Usage screenshot](./assets/employee_tracker.png)
+
 ## Description
 
-A small demo CMS (content management system) for tracking company department, role, and employee information with a simple terminal interface. View information on the company, add new elements, and change  information as desired
+A small demo CMS (content management system) for tracking company department, role, and employee information with a simple terminal interface. View information on the company, add new elements, and change  information as desired.
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Credits](#credits)
 - [Tests](#tests)
 - [Contributing](#contributing)
 - [Questions](#questions)
