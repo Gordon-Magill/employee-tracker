@@ -48,7 +48,8 @@ async function getMenuOption() {
 
 // Retrieve a promise resolving to an array of department table row objects
 async function getDepts() {
-  return db.promise().query("SELECT name AS 'Department', id AS 'Department ID' FROM department;");
+  let depts = await db.promise().query("SELECT name AS 'Department', id AS 'Department ID' FROM department;");
+  return depts
 };
 
 // 
@@ -255,5 +256,6 @@ module.exports = {
   getMenuOption,
   changeEmployeeRole,
   db,
+  prompt,
   closeDB,
 };
