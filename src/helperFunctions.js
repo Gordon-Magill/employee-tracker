@@ -133,6 +133,12 @@ async function addNewDept() {
 }
 
 async function addNewEmployee() {
+  let roleList = await getRoles();
+  roleList = roleList[0].map(role => role.title)
+  // let deptList = await getDepts();
+  // deptList = deptList[0]
+  let employeeList = await getEmployees();
+  employeeList = employeeList[0].map(emp => `${emp.first_name} ${emp.last_name}`);
   employeeQuestions = [
     {
       type: "input",
@@ -147,36 +153,30 @@ async function addNewEmployee() {
     {
       type: "list",
       message: "New employee role: ",
-      choices: getRoles(),
+      choices: roleList,
       name: "newEmpRole",
     },
     {
       type: "list",
       message: `New employee's manager: `,
-      choices: getEmployees(),
+      choices: employeeList,
       name: "newEmpMan",
     },
   ];
+
+
   const empInfo = await prompt(employeeQuestions);
-  db.query(
-    `INSERT INTO employees VALUES (?,?,?,?)`,
+  let managerIndex = employeeList.indexOf(empInfo.newEmpMan)+1
+  let roleIndex = roleList.indexOf(empInfo.newEmpRole)+1
+
+  return db.promise().query(
+    `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`,
     [
       empInfo.newEmpFirstName,
       empInfo.newEmpLastName,
-      empInfo.newEmpRole,
-      empInfo.newEmpMan,
-    ],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log({
-          result,
-          msg: "Successfully wrote new employee to db",
-        });
-      }
-    }
-  );
+      roleIndex,
+      managerIndex,
+    ])
 }
 
 async function changeEmployeeRole() {
