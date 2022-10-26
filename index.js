@@ -39,67 +39,35 @@ async function cycleMenuOptions() {
       break;
     case "View all employees":
       let employees = await getEmployees();
-      showEmployees(employees[0])
+      showEmployees(employees[0]);
 
       cycleMenuOptions();
 
       break;
     case "Add department":
       await addNewDept();
-      console.log('\nSUCCESS:\nSuccessfully wrote new deptartment to db.\n')
+      console.log("\nSUCCESS:\nSuccessfully wrote new deptartment to db.\n");
       cycleMenuOptions();
       break;
     case "Add role":
       await addNewRole();
-      console.log('\nSUCCESS:\nSuccessfully wrote new role to db.\n')
+      console.log("\nSUCCESS:\nSuccessfully wrote new role to db.\n");
       cycleMenuOptions();
       break;
     case "Add employee":
       await addNewEmployee();
-      console.log('\nSUCCESS:\nSuccessfully wrote new employee to db.\n')
+      console.log("\nSUCCESS:\nSuccessfully wrote new employee to db.\n");
       cycleMenuOptions();
       break;
     case "Change employee role":
       await changeEmployeeRole();
-      console.log('\nSUCCESS:\nSuccessfully wrote modified employee info to db.\n')
+      console.log(
+        "\nSUCCESS:\nSuccessfully wrote modified employee info to db.\n"
+      );
       cycleMenuOptions();
       break;
   }
 }
-
-// function testFuncAsync() {
-//   setTimeout(() => {
-//     return ['abc',123]
-//   },2000)
-// }
-
-// function testFuncSync() {
-//   return ['abc',123]
-// }
-
-// function testFuncPromise() {
-//   let myPromise = new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       resolve(['abc',123])
-//     },2000)
-
-
-//   })
-
-//   return myPromise;
-  
-// };
-
-// let returnValAsync = testFuncAsync()
-// let returnValSync = testFuncSync()
-// let returnValPromise = testFuncPromise()
-// console.dir(returnValAsync)
-// console.log(typeof returnValAsync)
-// console.dir(returnValSync)
-// console.log(typeof returnValSync)
-// console.dir(returnValPromise)
-// console.log(typeof returnValPromise)
-
 
 // Start the program
 cycleMenuOptions();

@@ -134,11 +134,13 @@ async function addNewDept() {
 
 async function addNewEmployee() {
   let roleList = await getRoles();
-  roleList = roleList[0].map(role => role.title)
+  roleList = roleList[0].map((role) => role.title);
   // let deptList = await getDepts();
   // deptList = deptList[0]
   let employeeList = await getEmployees();
-  employeeList = employeeList[0].map(emp => `${emp.first_name} ${emp.last_name}`);
+  employeeList = employeeList[0].map(
+    (emp) => `${emp.first_name} ${emp.last_name}`
+  );
   employeeQuestions = [
     {
       type: "input",
@@ -164,56 +166,54 @@ async function addNewEmployee() {
     },
   ];
 
-
   const empInfo = await prompt(employeeQuestions);
-  let managerIndex = employeeList.indexOf(empInfo.newEmpMan)+1
-  let roleIndex = roleList.indexOf(empInfo.newEmpRole)+1
+  let managerIndex = employeeList.indexOf(empInfo.newEmpMan) + 1;
+  let roleIndex = roleList.indexOf(empInfo.newEmpRole) + 1;
 
-  return db.promise().query(
-    `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`,
-    [
-      empInfo.newEmpFirstName,
-      empInfo.newEmpLastName,
-      roleIndex,
-      managerIndex,
-    ])
+  return db
+    .promise()
+    .query(
+      `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`,
+      [empInfo.newEmpFirstName, empInfo.newEmpLastName, roleIndex, managerIndex]
+    );
 }
 
 async function changeEmployeeRole() {
+  let roleList = await getRoles();
+  roleList = roleList[0].map((role) => role.title);
+  let employeeList = await getEmployees();
+  employeeList = employeeList[0].map(
+    (emp) => `${emp.first_name} ${emp.last_name}`
+  );
   const empPicker = await prompt({
     type: "list",
     message: "Select employee to modify:",
-    choices: getEmployees().map((employee) => {
-      return `${employee.first_name} ${employee.last_name}`;
-    }),
+    choices: employeeList,
     name: "selectedEmployee",
   });
 
-  const attrPicker = await prompt({
+  const rolePicker = await prompt({
     type: "list",
-    message: "Select employee property to modify: ",
-    choices: [id, first_name, last_name, role_id, manager_id],
-    name: "selectedAttr",
+    message: "Select employee new role: ",
+    choices: roleList,
+    name: "newRole",
   });
 
-  const valuePicker = await prompt({
-    type: "input",
-    message: `Select value for ${attrPicker.selectedAttr} on ${empPicker.selectedEmployee}:`,
-    name: "attrValue",
-  });
+  // const valuePicker = await prompt({
+  //   type: "input",
+  //   message: `Select value for ${attrPicker.selectedAttr} on ${empPicker.selectedEmployee}:`,
+  //   name: "attrValue",
+  // });
 
-  db.query(
-    `UPDATE employees
-  SET ?
-  WHERE ?`,
-    [
-      `${attrPicker.selectedAttr}=${valuePicker.attrValue}`,
-      `employee.first_name=${empPicker.selectedEmployee.split(" ")[0]}`,
-    ],
-    (err, result) => {
-      err ? console.log(err) : console.log(result);
-    }
-  );
+  let newRoleIndex = roleList.indexOf(rolePicker.newRole) + 1;
+  let employeeIndex = employeeList.indexOf(empPicker.selectedEmployee) + 1;
+
+  return db
+    .promise()
+    .query(`UPDATE employees SET role_id=? WHERE id=?`, [
+      newRoleIndex,
+      employeeIndex,
+    ]);
 }
 
 function closeDB() {
