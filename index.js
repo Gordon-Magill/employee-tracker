@@ -25,7 +25,7 @@ async function cycleMenuOptions() {
   switch (option) {
     case "Quit":
       closeDB();
-      console.log("Done cycling options");
+      console.log('\nGoodbye.\n')
       return;
     case "View all departments":
       const depts = await getDepts();
@@ -71,3 +71,4 @@ async function cycleMenuOptions() {
 
 // Start the program
 cycleMenuOptions();
+
