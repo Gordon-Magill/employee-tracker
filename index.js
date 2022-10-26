@@ -3,11 +3,14 @@ require("dotenv").config();
 
 // Helper functions for each major operation
 const {
-    getRoles,
+  getRoles,
   //   setNewRole,
+  showRoles,
   getDepts,
-    setNewDept,
-    getEmployees,
+  showDepts,
+  setNewDept,
+  getEmployees,
+  showEmployees,
   //   setNewEmployee,
   getMenuOption,
   //   changeEmployee,
@@ -25,47 +28,43 @@ async function cycleMenuOptions() {
       console.log("Done cycling options");
       return;
     case "View all departments":
-      await getDepts();
+      const depts = await getDepts();
+      showDepts(depts[0]);
+      cycleMenuOptions();
+      break;
+    case "View all roles":
+      let roles = await getRoles();
+      showRoles(roles[0]);
+      cycleMenuOptions();
+      break;
+    case "View all employees":
+      let employees = await getEmployees();
+      showEmployees(employees[0])
 
-      // For whatever reason if you don't force the code to pause (even for 1ms)
-      // then inquirer will overwrite the terminal console logs...
+      cycleMenuOptions();
+
+      break;
+    case "Add department":
+      await setNewDept();
       setTimeout(() => {
         cycleMenuOptions();
       }, 50);
       break;
-    case "View all roles":
-        await getRoles()
-        setTimeout(() => {
-            cycleMenuOptions();
-          }, 50);
-      break;
-    case "View all employees":
-        await getEmployees()
-        setTimeout(() => {
-            cycleMenuOptions();
-          }, 50);
-      break;
-    case "Add department":
-        await setNewDept()
-        setTimeout(() => {
-            cycleMenuOptions();
-          }, 50);
-      break;
     case "Add role":
-        await setNewRole()
-        setTimeout(() => {
-            cycleMenuOptions();
-          }, 50);
+      await setNewRole();
+      setTimeout(() => {
+        cycleMenuOptions();
+      }, 50);
       break;
     case "Add employee":
-        setTimeout(() => {
-            cycleMenuOptions();
-          }, 50);
+      setTimeout(() => {
+        cycleMenuOptions();
+      }, 50);
       break;
     case "Change employee role":
-        setTimeout(() => {
-            cycleMenuOptions();
-          }, 50);
+      setTimeout(() => {
+        cycleMenuOptions();
+      }, 50);
       break;
   }
 }

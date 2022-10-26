@@ -11,60 +11,48 @@ const db = mysql.createConnection({
 let prompt = inquirer.createPromptModule();
 
 async function getDepts() {
-  // console.log('getDepts() called')
-  db.query("SELECT deptName FROM departments", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("\nDepartments:");
-      result.forEach((dept) => {
-        console.log(`\t-${dept.deptName}`);
-      });
-      console.log("");
-      return result;
-    }
+  return db.promise().query("SELECT deptName FROM departments");
+}
+
+function showDepts(depts) {
+  console.log("\nDepartments:");
+  depts.forEach((dept) => {
+    console.log(`\t-${dept.deptName}`);
   });
+  console.log("");
 }
 
 async function getRoles() {
-  db.query("SELECT title FROM roles", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("\nRoles:");
-      result.forEach((role) => {
-        console.log(`\t-${role.title}`);
-      });
-      console.log("");
+  return db.promise().query("SELECT title FROM roles");
+}
 
-      return result;
-    }
+function showRoles(roles) {
+  console.log("\nRoles:");
+  roles.forEach((role) => {
+    // console.table(role)
+    console.log(`\t-${role.title}`);
   });
+  console.log("");
 }
 
 async function getEmployees() {
-  db.query(
+  return db.promise().query(
     `SELECT employees.id, employees.first_name, employees.last_name, roles.title, roles.salary, departments.deptName 
         FROM employees  
         LEFT JOIN roles ON employees.role_id=roles.id 
-        LEFT JOIN departments ON roles.department_id=departments.id`,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("\nEmployees:");
-        result.forEach((emp) => {
-          console.log(` -${emp.first_name} ${emp.last_name}
+        LEFT JOIN departments ON roles.department_id=departments.id`)
+};
+
+function showEmployees(employees) {
+  console.log("\nEmployees:");
+  employees.forEach((emp) => {
+    console.log(` -${emp.first_name} ${emp.last_name}
     ID: ${emp.id}
     Department: ${emp.deptName}
     Title: ${emp.title}
     Salary: $${emp.salary}/yr\n`);
-        });
-        console.log("");
-        return result;
-      }
-    }
-  );
+  });
+  console.log("");
 }
 
 menuQuestions = [
@@ -93,26 +81,26 @@ deptQuestions = [
   },
 ];
 
-roleQuestions = [
-  {
-    type: "input",
-    message: "New role title: ",
-    name: "newRoleTitle",
-  },
-  {
-    type: "input",
-    message: "New role salary: ",
-    name: "newRoleSalary",
-  },
-  {
-    type: "list",
-    message: "New role department: ",
-    choices: getDepts().map((dept) => {
-      return 
-    }),
-    name: "newRoleDept",
-  },
-];
+// roleQuestions = [
+//   {
+//     type: "input",
+//     message: "New role title: ",
+//     name: "newRoleTitle",
+//   },
+//   {
+//     type: "input",
+//     message: "New role salary: ",
+//     name: "newRoleSalary",
+//   },
+//   {
+//     type: "list",
+//     message: "New role department: ",
+//     choices: getDepts().map((dept) => {
+//       return
+//     }),
+//     name: "newRoleDept",
+//   },
+// ];
 
 async function getMenuOption() {
   const selectedOption = await prompt(menuQuestions);
@@ -252,9 +240,12 @@ function closeDB() {
 module.exports = {
   getRoles,
   // setNewRole,
+  showRoles,
   getDepts,
+  showDepts,
   setNewDept,
   getEmployees,
+  showEmployees,
   // setNewEmployee,
   getMenuOption,
   // changeEmployee,
