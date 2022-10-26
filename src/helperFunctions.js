@@ -169,16 +169,16 @@ function showEmployees(employees) {
 }
 
 async function addNewEmployee() {
+  // Get potential roles for new employee
   let roleList = await getRoles();
-  // console.dir(roleList)
-  console.dir(roleList)
   roleList = roleList[0].map((role) => role.Title);
-  // let deptList = await getDepts();
-  // deptList = deptList[0]
+
+  // Get potential managers for new employee
   let employeeList = await getEmployees();
   employeeList = employeeList[0].map(
     (emp) => `${emp['First Name']} ${emp['Last Name']}`
   );
+
   employeeQuestions = [
     {
       type: "input",
@@ -229,10 +229,10 @@ async function addNewEmployee() {
 
 async function changeEmployeeRole() {
   let roleList = await getRoles();
-  roleList = roleList[0].map((role) => role.title);
+  roleList = roleList[0].map((role) => role.Title);
   let employeeList = await getEmployees();
   employeeList = employeeList[0].map(
-    (emp) => `${emp.first_name} ${emp.last_name}`
+    (emp) => `${emp['First Name']} ${emp['Last Name']}`
   );
   const empPicker = await prompt({
     type: "list",
