@@ -24,6 +24,8 @@ Install and setup mysql locally. Run "npm i" in the repo directory. For demonstr
 
 Run "node index" in the repo directory. Follow text prompts.
 
+Youtube usage video: https://youtu.be/zOWTIyH_mqw
+
 ## Tests
 
 No tests implemented at this time.
