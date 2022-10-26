@@ -1,26 +1,18 @@
-// For retrieving mysql info from .env
+// Set up environment variables from .env
 require("dotenv").config();
 
+// Import the three major custom classes
 const Employees = require("./lib/Employees");
 const Roles = require('./lib/Roles')
 const Departments = require('./lib/Departments')
-// Helper functions for each major operation
+
+// Helper functions for menu operation and database closeout
 const {
-  // getRoles,
-  // addNewRole,
-  // showRoles,
-  // getDepts,
-  // showDepts,
-  // addNewDept,
-  // getEmployees,
-  // showEmployees,
-  // addNewEmployee,
   getMenuOption,
-  changeEmployeeRole,
-  closeDB,
+  closeDB
 } = require("./src/helperFunctions");
 
-// Initializing objects
+// Initializing global objects
 let EMPLOYEES = new Employees();
 let DEPARTMENTS = new Departments();
 let ROLES = new Roles();
@@ -57,28 +49,43 @@ async function cycleMenuOptions() {
 
     case "Add department":
       await DEPARTMENTS.addNewDept()
+
+      // Keeping DEPARTMENTS up to date with db content
       DEPARTMENTS.refreshDepartmentList()
+
       console.log("\nSUCCESS:\nSuccessfully wrote new deptartment to db.\n");
       cycleMenuOptions();
       break;
 
     case "Add role":
+      // Create new role that can draw from existing departments
       await ROLES.addNewRole(DEPARTMENTS.getDepartmentList());
+
+      // Keeping ROLES up to date with db content
       ROLES.refreshRoleList()
+
       console.log("\nSUCCESS:\nSuccessfully wrote new role to db.\n");
       cycleMenuOptions();
       break;
 
     case "Add employee":
+      // Create new employee that can draw from existing roles
       await EMPLOYEES.addNewEmployee(ROLES.getRoleList())
+
+      // Keeping EMPLOYEES up to date with db content
       EMPLOYEES.refreshEmployeeList()
+      
       console.log("\nSUCCESS:\nSuccessfully wrote new employee to db.\n");
       cycleMenuOptions();
       break;
 
     case "Change employee role":
+      // Update employee role based on available roles
       await EMPLOYEES.changeEmployeeRole(ROLES.getRoleList())
+
+      // Keeping EMPLOYEES up to date with db content
       EMPLOYEES.refreshEmployeeList()
+
       console.log(
         "\nSUCCESS:\nSuccessfully wrote modified employee info to db.\n"
       );
