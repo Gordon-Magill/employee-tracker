@@ -1,21 +1,29 @@
-// For retrieving mysql password from .env
+// For retrieving mysql info from .env
 require("dotenv").config();
 
+const Employees = require("./lib/Employees");
+const Roles = require('./lib/Roles')
+const Departments = require('./lib/Departments')
 // Helper functions for each major operation
 const {
-  getRoles,
-  addNewRole,
-  showRoles,
-  getDepts,
-  showDepts,
-  addNewDept,
-  getEmployees,
-  showEmployees,
-  addNewEmployee,
+  // getRoles,
+  // addNewRole,
+  // showRoles,
+  // getDepts,
+  // showDepts,
+  // addNewDept,
+  // getEmployees,
+  // showEmployees,
+  // addNewEmployee,
   getMenuOption,
   changeEmployeeRole,
   closeDB,
 } = require("./src/helperFunctions");
+
+// Initializing objects
+let EMPLOYEES = new Employees();
+let DEPARTMENTS = new Departments();
+let ROLES = new Roles();
 
 // Continuously loops through options until the user elects to exit the program
 async function cycleMenuOptions() {
@@ -33,43 +41,44 @@ async function cycleMenuOptions() {
       return;
 
     case "View all departments":
-      const depts = await getDepts();
-      showDepts(depts[0]);
+      DEPARTMENTS.showTable()
       cycleMenuOptions();
       break;
 
     case "View all roles":
-      let roles = await getRoles();
-      showRoles(roles[0]);
+      ROLES.showTable();
       cycleMenuOptions();
       break;
 
     case "View all employees":
-      let employees = await getEmployees();
-      showEmployees(employees[0]);
+      EMPLOYEES.showTable();
       cycleMenuOptions();
       break;
 
     case "Add department":
-      await addNewDept();
+      await DEPARTMENTS.addNewDept()
+      DEPARTMENTS.refreshDepartmentList()
       console.log("\nSUCCESS:\nSuccessfully wrote new deptartment to db.\n");
       cycleMenuOptions();
       break;
 
     case "Add role":
-      await addNewRole();
+      await ROLES.addNewRole(DEPARTMENTS.getDepartmentList());
+      ROLES.refreshRoleList()
       console.log("\nSUCCESS:\nSuccessfully wrote new role to db.\n");
       cycleMenuOptions();
       break;
 
     case "Add employee":
-      await addNewEmployee();
+      await EMPLOYEES.addNewEmployee(ROLES.getRoleList())
+      EMPLOYEES.refreshEmployeeList()
       console.log("\nSUCCESS:\nSuccessfully wrote new employee to db.\n");
       cycleMenuOptions();
       break;
 
     case "Change employee role":
-      await changeEmployeeRole();
+      await EMPLOYEES.changeEmployeeRole(ROLES.getRoleList())
+      EMPLOYEES.refreshEmployeeList()
       console.log(
         "\nSUCCESS:\nSuccessfully wrote modified employee info to db.\n"
       );
@@ -77,6 +86,9 @@ async function cycleMenuOptions() {
       break;
   };
 };
+
+
+
 
 // Start the program with some nice text introduction
 console.clear()

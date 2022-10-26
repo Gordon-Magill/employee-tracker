@@ -58,15 +58,14 @@ function showDepts(depts) {
   console.log("");
 }
 
-deptQuestions = [
-  {
-    type: "input",
-    message: "New dept name: ",
-    name: "newDeptName",
-  },
-];
-
 async function addNewDept() {
+  deptQuestions = [
+    {
+      type: "input",
+      message: "New dept name: ",
+      name: "newDeptName",
+    },
+  ];
   const deptInfo = await prompt(deptQuestions);
 
   return db
@@ -83,12 +82,6 @@ async function addNewDept() {
 
 async function getRoles() {
   return db.promise().query("SELECT role.title AS 'Title', role.id AS 'Role ID', role.salary AS 'Salary', department.name AS 'Department' FROM role LEFT JOIN department ON role.department_id=department.id");
-
-      // `SELECT employees.id, employees.first_name, employees.last_name, roles.title, roles.salary, departments.deptName 
-      //     FROM employees  
-      //     LEFT JOIN roles ON employees.role_id=roles.id 
-      //     LEFT JOIN departments ON roles.department_id=departments.id`
-
 }
 
 function showRoles(roles) {
@@ -163,30 +156,6 @@ async function addNewEmployee() {
     (emp) => `${emp['First Name']} ${emp['Last Name']}`
   );
 
-  employeeQuestions = [
-    {
-      type: "input",
-      message: "New employee first name: ",
-      name: "newEmpFirstName",
-    },
-    {
-      type: "input",
-      message: "New employee last name: ",
-      name: "newEmpLastName",
-    },
-    {
-      type: "list",
-      message: "New employee role: ",
-      choices: roleList,
-      name: "newEmpRole",
-    },
-    {
-      type: "list",
-      message: `New employee's manager: `,
-      choices: [...employeeList, 'None'],
-      name: "newEmpMan",
-    },
-  ];
 
   const empInfo = await prompt(employeeQuestions);
   let managerIndex = employeeList.indexOf(empInfo.newEmpMan) + 1;
