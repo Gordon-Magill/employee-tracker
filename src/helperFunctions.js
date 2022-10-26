@@ -48,7 +48,7 @@ async function getMenuOption() {
 
 // Retrieve a promise resolving to an array of department table row objects
 async function getDepts() {
-  return db.promise().query("SELECT deptName AS 'Department', id AS 'Department ID' FROM departments;");
+  return db.promise().query("SELECT name AS 'Department', id AS 'Department ID' FROM department;");
 };
 
 // 
@@ -75,7 +75,7 @@ async function addNewDept() {
   return db
     .promise()
     .query(
-      "INSERT INTO departments (deptName) VALUES (?);",
+      "INSERT INTO department (name) VALUES (?);",
       deptInfo.newDeptName
     );
 }
@@ -85,7 +85,7 @@ async function addNewDept() {
 // *********************
 
 async function getRoles() {
-  return db.promise().query("SELECT roles.title AS 'Title', roles.id AS 'Role ID', roles.salary AS 'Salary', departments.deptName AS 'Department' FROM roles LEFT JOIN departments ON roles.department_id=departments.id");
+  return db.promise().query("SELECT role.title AS 'Title', role.id AS 'Role ID', role.salary AS 'Salary', department.name AS 'Department' FROM role LEFT JOIN department ON role.department_id=department.id");
 
       // `SELECT employees.id, employees.first_name, employees.last_name, roles.title, roles.salary, departments.deptName 
       //     FROM employees  
@@ -136,7 +136,7 @@ async function addNewRole() {
   return db
     .promise()
     .query(
-      "INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)",
+      "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)",
       [roleInfo.newRoleTitle, parseInt(roleInfo.newRoleSalary), roleDept]
     );
 };
@@ -147,11 +147,11 @@ async function addNewRole() {
 
 async function getEmployees() {
   return db.promise().query(
-    `SELECT copy1.id AS 'Employee ID', copy1.first_name AS 'First Name', copy1.last_name AS 'Last Name', roles.title AS ' Title', roles.salary AS 'Salary', departments.deptName AS 'Department', copy2.first_name AS 'Manager First Name', copy2.last_name as 'Manager Last Name'
-        FROM employees copy1
-        LEFT JOIN roles ON copy1.role_id=roles.id 
-        LEFT JOIN departments ON roles.department_id=departments.id
-        LEFT JOIN employees copy2 ON copy1.manager_id=copy2.id`
+    `SELECT copy1.id AS 'Employee ID', copy1.first_name AS 'First Name', copy1.last_name AS 'Last Name', role.title AS ' Title', role.salary AS 'Salary', department.name AS 'Department', copy2.first_name AS 'Manager First Name', copy2.last_name as 'Manager Last Name'
+        FROM employee copy1
+        LEFT JOIN role ON copy1.role_id=role.id 
+        LEFT JOIN department ON role.department_id=department.id
+        LEFT JOIN employee copy2 ON copy1.manager_id=copy2.id`
   );
 }
 
@@ -212,14 +212,14 @@ async function addNewEmployee() {
     return db
     .promise()
     .query(
-      `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`,
+      `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`,
       [empInfo.newEmpFirstName, empInfo.newEmpLastName, roleIndex, managerIndex]
     );
   } else {
     return db
     .promise()
     .query(
-      `INSERT INTO employees (first_name, last_name, role_id) VALUES (?,?,?)`,
+      `INSERT INTO employee (first_name, last_name, role_id) VALUES (?,?,?)`,
       [empInfo.newEmpFirstName, empInfo.newEmpLastName, roleIndex]
     );
 
@@ -253,7 +253,7 @@ async function changeEmployeeRole() {
 
   return db
     .promise()
-    .query(`UPDATE employees SET role_id=? WHERE id=?`, [
+    .query(`UPDATE employee SET role_id=? WHERE id=?`, [
       newRoleIndex,
       employeeIndex,
     ]);
