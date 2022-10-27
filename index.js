@@ -86,6 +86,24 @@ async function cycleMenuOptions() {
       );
       cycleMenuOptions();
       break;
+
+    case "Change employee manager":
+      await EMPLOYEES.changeEmployeeManager()
+      EMPLOYEES.refreshEmployeeList();
+      console.log(
+        "\nSUCCESS:\nSuccessfully wrote modified employee manager to db.\n"
+      );
+      cycleMenuOptions();
+      break;
+
+    case "Remove employee":
+      await EMPLOYEES.removeEmployee()
+      EMPLOYEES.refreshEmployeeList();
+      console.log(
+        "\nSUCCESS:\nSuccessfully removed employee from db.\n"
+      );
+      cycleMenuOptions();
+      break;
   }
 }
 
