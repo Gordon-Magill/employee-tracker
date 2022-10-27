@@ -114,6 +114,28 @@ async function cycleMenuOptions() {
       await EMPLOYEES.viewEmployeesByDepartment(DEPARTMENTS.getDepartmentList())
       cycleMenuOptions();
       break;
+
+    case "Remove role":
+      await ROLES.removeRole()
+      ROLES.refreshRoleList();
+      EMPLOYEES.refreshEmployeeList();
+      console.log(
+        "\nSUCCESS:\nSuccessfully removed role from db.\n"
+      );
+      cycleMenuOptions();
+      break;
+
+    case "Remove department":
+      await DEPARTMENTS.removeDept()
+      DEPARTMENTS.refreshDepartmentList()
+      ROLES.refreshRoleList()
+      EMPLOYEES.refreshEmployeeList()
+      console.log(
+        "\nSUCCESS:\nSuccessfully removed department from db.\n"
+      );
+      cycleMenuOptions();
+      break;
+
   }
 }
 
