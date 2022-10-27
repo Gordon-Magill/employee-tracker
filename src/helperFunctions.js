@@ -38,6 +38,7 @@ async function getMenuOption() {
         "Remove employee",
         "Remove role",
         "Remove department",
+        "See department budget",
         "Quit",
       ],
       name: "Options",

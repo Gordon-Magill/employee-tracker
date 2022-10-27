@@ -136,6 +136,11 @@ async function cycleMenuOptions() {
       cycleMenuOptions();
       break;
 
+    case "See department budget":
+      await DEPARTMENTS.displayDeptCost()
+      cycleMenuOptions();
+      break;
+
   }
 }
 
