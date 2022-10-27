@@ -26,19 +26,22 @@ async function getMenuOption() {
       message: "",
       choices: [
         "View all departments",
-        "View employees by department",
         "Add department",
         "Remove department",
         "See department budget",
+
         "View all roles",
         "Add role",
         "Remove role",
+
         "View all employees",
         "View employees by manager",
+        "View employees by department",
         "Add employee",
+        "Remove employee",
         "Change employee role",
         "Change employee manager",
-        "Remove employee",
+        
         "Quit",
       ],
       name: "Options",
