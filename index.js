@@ -109,6 +109,11 @@ async function cycleMenuOptions() {
       await EMPLOYEES.viewEmployeesByManager()
       cycleMenuOptions();
       break;
+
+    case "View employees by department":
+      await EMPLOYEES.viewEmployeesByDepartment(DEPARTMENTS.getDepartmentList())
+      cycleMenuOptions();
+      break;
   }
 }
 
