@@ -104,6 +104,11 @@ async function cycleMenuOptions() {
       );
       cycleMenuOptions();
       break;
+
+    case "View employees by manager":
+      await EMPLOYEES.viewEmployeesByManager()
+      cycleMenuOptions();
+      break;
   }
 }
 

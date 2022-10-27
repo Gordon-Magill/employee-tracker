@@ -28,6 +28,7 @@ async function getMenuOption() {
         "View all departments",
         "View all roles",
         "View all employees",
+        "View employees by manager",
         "Add department",
         "Add role",
         "Add employee",
