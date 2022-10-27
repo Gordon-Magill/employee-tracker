@@ -18,7 +18,9 @@ A small demo CMS (content management system) for tracking company department, ro
 
 ## Installation
 
-Install and setup mysql locally. Run "npm i" in the repo directory. For demonstration purposes also load the schema and seed (in the 'db' directory).
+Install and setup mysql locally. Run "npm i" in the repo directory. Modify .env.EXAMPLE to remove the dummy suffix and add your db credentials.
+
+For demonstration purposes also load the schema and seed (in the 'db' directory).
 
 ## Usage
 
